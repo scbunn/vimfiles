@@ -94,4 +94,21 @@ set showcmd                             " show incomplete normal mode commands a
 set report=0                            " : commands always print changed line count
 set shortmess+=a                        " use [+]/[RO]/[W] for modified/readonly/written
 set laststatus=2                        " Always show statusline, even if only 1 window
-set statusline=[%l,%v\ %P%M]\ %f\ %r%h%w\ (%{&ff})\ %{fugitive#statusline()}
+set statusline=[%l,%v\ %P%M]\ %f\ %r%h%w\ (%{&ff})\ 
+
+" Searching/Patterns
+set ignorecase                          " Default to using case insensitive searches
+set smartcase                           " unless uppercase letters are used
+set smarttab                            " handle tables intelligently
+set hlsearch                            " Highlight searches by default
+set incsearch                           " Incrementally search while typing a search
+
+" Display/Color Theme
+if has("gui_running")
+    colorscheme solarized
+    " remove menubar / toolbar
+    set guioptions-=mT
+else
+    colorscheme solarized
+endif
+
