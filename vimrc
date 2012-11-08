@@ -31,8 +31,67 @@ let mapleader=","			" change leader from \ to ,
 "-----------------------------------------------------------------------------
 " Global shortcuts
 "-----------------------------------------------------------------------------
-cmap W! w !sudo tee % > /dev/null      " write file using sudo privs
-cmap w!! w !sudo tee % > /dev/null     " try and save file with sudo if need?
+" write files using sudo privs
+cmap W! w !sudo tee % > /dev/null
+" try and save file with sudo if needed?
+cmap w!! w !sudo tee % > /dev/null
+
 map <leader>td <Plug>TaskList          " Toggle the TaskList
 
+"-----------------------------------------------------------------------------
+" Pathogen
+"-----------------------------------------------------------------------------
+" load pathogen with docs for all plugins
+filetype off
+runtime bundle/vim-pathogen/autoload/pathogen.vim
+call pathogen#infect()
+call pathogen#helptags()
 
+"-----------------------------------------------------------------------------
+" Basic settings
+"-----------------------------------------------------------------------------
+syntax on                               " syntax highlighting
+filetype on                             " try to detect filetypes
+filetype plugin indent on               " enable loading indent file for filetype
+set number                              " display line numbers
+set numberwidth=1                       " use only 1 column (and 1 space) 
+set background=dark                     " set colortheme background to dark
+set title                               " show title in console title bar
+set wildmenu                            " menu completion in command mode on <Tab>
+set wildmode=full                       "<Tab> cycles between all matching choices
+set cursorline                          " have a line indicate the cursor location
+set ruler                               " show thte cursor position at all times
+set nostartofline                       " avoid moving cursor to BOL when jumping
+set virtualedit=block                   " let cursor move past the last char in <C-v> mode
+set scrolloff=3                         " Keep 3 context lines above and below the cursor
+set backspace=2                         " allow backspacing over autoindent, EOL, and BOL
+set showmatch                           " briefly jump to a paren once its balanced
+set nowrap                              " dont wrap text
+set linebreak                           " dont wrap text in the middle of a word
+set autoindent                          " always set autoindenting on
+set smartindent                         " use smartindent if no indent file
+set tabstop=4                           " <tab> inserts 4 spaces
+set shiftwidth=4                        " 4 space shiftwidth
+set softtabstop=4                       " <BS> over an autoindent delete both spaces
+set expandtab                           " Use spaces, not tabs, for autoindent/tab key
+set shiftround                          " round indent to a multiple of shiftwidth
+set matchpairs+=<:>                     " show <> pairs as well
+set foldmethod=indent                   " fold based on indent level
+set foldlevel=99                        " don't fold by default
+
+" Reading/Writing
+set noautowrite                         " never write a file without being told to do so
+set noautowriteall                      " really -- never
+set noautoread                          " don't reread changed files
+set modeline                            " allow vim options to be embedded in files
+set modelines=5                         " they must be within the first/last 5 lines
+set ffs=unix,dos,mac                    " try to recognize various line endings
+
+" Messages, Info, Status
+set ls=2                                " allows show status line
+set confirm                             " y-n-c prompt if closing unsaved files
+set showcmd                             " show incomplete normal mode commands as I type
+set report=0                            " : commands always print changed line count
+set shortmess+=a                        " use [+]/[RO]/[W] for modified/readonly/written
+set laststatus=2                        " Always show statusline, even if only 1 window
+set statusline=[%l,%v\ %P%M]\ %f\ %r%h%w\ (%{&ff})\ %{fugitive#statusline()}
