@@ -78,6 +78,7 @@ set shiftround                          " round indent to a multiple of shiftwid
 set matchpairs+=<:>                     " show <> pairs as well
 set foldmethod=indent                   " fold based on indent level
 set foldlevel=99                        " don't fold by default
+let python_highlight_all=1              " do better python syntax highlighting
 
 " Reading/Writing
 set noautowrite                         " never write a file without being told to do so
@@ -94,7 +95,15 @@ set showcmd                             " show incomplete normal mode commands a
 set report=0                            " : commands always print changed line count
 set shortmess+=a                        " use [+]/[RO]/[W] for modified/readonly/written
 set laststatus=2                        " Always show statusline, even if only 1 window
-set statusline=[%l,%v\ %P%M]\ %f\ %r%h%w\ (%{&ff})\ 
+
+" Set the status line
+set statusline=\ %-3.3n
+set statusline+=%f
+set statusline+=%m%r%h%w
+set statusline+=\ [%{strlen(&fenc)?&fenc:&enc}]
+set statusline+=%=
+set statusline+=%{synIDattr(synID(line('.'),col('.'),1),'name')}\  " highlight
+set statusline+=\ [line\ %l:%L:%c]\ 
 
 " Searching/Patterns
 set ignorecase                          " Default to using case insensitive searches
@@ -102,6 +111,38 @@ set smartcase                           " unless uppercase letters are used
 set smarttab                            " handle tables intelligently
 set hlsearch                            " Highlight searches by default
 set incsearch                           " Incrementally search while typing a search
+
+
+" disable arrow keys for movement (need to force myself to learn)
+nnoremap <Left> :echoe "Use h"<CR> 
+nnoremap <Right> :echoe "Use l"<CR>
+nnoremap <Up> :echoe "Use k"<CR>
+nnoremap <Down> :echoe "Use j"<CR>"
+inoremap <up> <nop>
+inoremap <down> <nop>
+inoremap <left> <nop>
+inoremap <right> <nop>
+
+imap jj <ESC>
+
+" Switch between buffers
+noremap <tab> :bn<CR>
+noremap <S-tab> :bp<CR>
+" close buffer
+nmap <leader>d :bd<CR>
+" close all buffers
+nmap <leader>D :bufdo bd<CR>
+
+" Switch between last two buffers
+nnoremap <leader><leader> <c-^>
+
+" Saving and exit
+nmap <leader>q :wqa!<CR>
+nmap <leader>w :w!<CR>
+nmap <leader><Esc> :q!<CR>
+
+" execute current buffer as python
+map <S-r> :w !/usr/bin/env python %<CR>
 
 " Display/Color Theme
 if has("gui_running")
@@ -112,3 +153,7 @@ else
     colorscheme solarized
 endif
 
+" Source the vimrc file after saving it
+if has("autocmd")
+    autocmd bufwritepost .vimrc source $MYVIMRC
+endif
