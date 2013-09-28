@@ -147,6 +147,10 @@ map <S-r> :w !/usr/bin/env python %<CR>
 " Display/Color Theme
 if has("gui_running")
     colorscheme solarized
+    " set the font if we are using MacVim
+    if has("gui_macvim")
+        set guifont=Monaco:h18
+    endif
     " remove menubar / toolbar
     set guioptions-=mT
 else
