@@ -17,3 +17,6 @@
 [submodule "bundle/conque"]
 	path = bundle/conque
 	url = https://github.com/rosenfeld/conque-term.git
+[submodule "bundle/vim-puppet"]
+	path = bundle/vim-puppet
+	url = https://github.com/rodjek/vim-puppet
