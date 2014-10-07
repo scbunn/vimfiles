@@ -161,3 +161,6 @@ endif
 if has("autocmd")
     autocmd bufwritepost .vimrc source $MYVIMRC
 endif
+
+" Python binding stuff
+let g:pep8_map='<leader>8'
