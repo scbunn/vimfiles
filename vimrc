@@ -162,5 +162,9 @@ if has("autocmd")
     autocmd bufwritepost .vimrc source $MYVIMRC
 endif
 
+
 " Python binding stuff
+" remove trailing whitespace automagically
+autocmd BufWritePre *.py :%s/\s\+$//e
+
 let g:pep8_map='<leader>8'
