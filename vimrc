@@ -168,3 +168,6 @@ endif
 autocmd BufWritePre *.py :%s/\s\+$//e
 
 let g:pep8_map='<leader>8'
+let g:pymode_lint_cwindow = 0
+autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
+autocmd InsertLeave * if pumvisible() == 0|pclose|endif
