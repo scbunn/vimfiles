@@ -2,26 +2,8 @@
 " ----------------------------------------------------------------------------
 "  Dependencies needed outside of vim
 " ----------------------------------------------------------------------------
-"  None
-"
-" ----------------------------------------------------------------------------
-" Plugins included
-" ----------------------------------------------------------------------------
-"  Pathogen
-"  	Better Management of VIM plugins
-"
-"  GunDo
-"  	Visual undo in vim with diff's to check the differences
-"
-"  Snipmate
-"  	Configurable snippets to avoid re-typing common commands
-"
-"  Fugitive
-"  	Inteface with git from vim
-"
-"  TaskList
-"  	highlight FIXME and TODO text
-"  
+" YouCompleteMe needs to be setup for use with clang and a custom
+
 "-----------------------------------------------------------------------------
 " Global general settings
 "-----------------------------------------------------------------------------
@@ -39,13 +21,30 @@ cmap w!! w !sudo tee % > /dev/null
 map <leader>td <Plug>TaskList          " Toggle the TaskList
 
 "-----------------------------------------------------------------------------
-" Pathogen
+" Vundle configuration
 "-----------------------------------------------------------------------------
-" load pathogen with docs for all plugins
-filetype off
-runtime bundle/vim-pathogen/autoload/pathogen.vim
-call pathogen#infect()
-call pathogen#helptags()
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+" --------------------------------
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'tpope/vim-fugitive'
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'sjl/gundo.vim'
+Plugin 'godlygeek/tabular'
+Plugin 'klen/python-mode'
+Plugin 'vim-scripts/TaskList.vim'
+Plugin 'saltstack/salt-vim'
+Plugin 'othree/html5.vim'
+Plugin 'Shougo/unite.vim'
+Plugin 'scrooloose/syntastic'
+Plugin 'ervandew/supertab'
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'SirVer/ultisnips'
+Plugin 'honza/vim-snippets'
+
+" end of vundle init
+" --------------------------------
+call vundle#end()
 
 "-----------------------------------------------------------------------------
 " Basic settings
@@ -79,6 +78,8 @@ set matchpairs+=<:>                     " show <> pairs as well
 set foldmethod=indent                   " fold based on indent level
 set foldlevel=99                        " don't fold by default
 let python_highlight_all=1              " do better python syntax highlighting
+set cindent                             " C/C++ style indenting
+set cinoptions=g0                       " take public/private to 0 tabs
 
 " Reading/Writing
 set noautowrite                         " never write a file without being told to do so
@@ -104,6 +105,8 @@ set statusline+=\ [%{strlen(&fenc)?&fenc:&enc}]
 set statusline+=%=
 set statusline+=%{synIDattr(synID(line('.'),col('.'),1),'name')}\  " highlight
 set statusline+=\ [line\ %l:%L:%c]\ 
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
 
 " Searching/Patterns
 set ignorecase                          " Default to using case insensitive searches
@@ -171,3 +174,31 @@ let g:pep8_map='<leader>8'
 let g:pymode_lint_cwindow = 0
 autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
 autocmd InsertLeave * if pumvisible() == 0|pclose|endif
+
+let g:pymode_rope_lookup_project = 0
+let g:pymode_rope_complete_on_dot = 0
+
+" Syntastic settings
+let g:syntastic_cpp_compiler = 'clang++'
+let g:syntastic_cpp_compiler_options = '-std=c++14 -Wall'
+let g:syntastic_cpp_check_header = 1
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+" Unite settings
+call unite#filters#matcher_default#use(['matcher_fuzzy'])
+nnoremap <Leader>f :<C-u>Unite -start-insert file buffer<CR>
+nnoremap <Leader>g :<C-u>Unite -start-insert buffer<CR>
+
+" Configure YouCompleteMe
+let g:ycm_global_ycm_extra_conf = "~/.vim/ycm_extra_conf.default.py"
+
+" Configure SuperTab to make <tab> work with both YouCompleteMe and UltiSnips
+let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+let g:SuperTabDefaultCompletionType = '<C-n>'
+let g:UltiSnipsExpandTrigger = "<tab>"
+let g:UltiSnipsJumpForwardTrigger = "<tab>"
+let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
