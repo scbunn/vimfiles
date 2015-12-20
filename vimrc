@@ -41,6 +41,7 @@ Plugin 'ervandew/supertab'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
+Plugin 'rhysd/vim-clang-format'
 
 " end of vundle init
 " --------------------------------
@@ -79,7 +80,8 @@ set foldmethod=indent                   " fold based on indent level
 set foldlevel=99                        " don't fold by default
 let python_highlight_all=1              " do better python syntax highlighting
 set cindent                             " C/C++ style indenting
-set cinoptions=g0                       " take public/private to 0 tabs
+set cinoptions=g0>2                     " take public/private to 0 tabs
+                                        " 2 space indents (Google style)
 
 " Reading/Writing
 set noautowrite                         " never write a file without being told to do so
@@ -194,6 +196,7 @@ nnoremap <Leader>g :<C-u>Unite -start-insert buffer<CR>
 
 " Configure YouCompleteMe
 let g:ycm_global_ycm_extra_conf = "~/.vim/ycm_extra_conf.default.py"
+let g:ycm_confirm_extra_conf = 0
 
 " Configure SuperTab to make <tab> work with both YouCompleteMe and UltiSnips
 let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
@@ -202,3 +205,6 @@ let g:SuperTabDefaultCompletionType = '<C-n>'
 let g:UltiSnipsExpandTrigger = "<tab>"
 let g:UltiSnipsJumpForwardTrigger = "<tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+
+" Bind key to clang-format
+map <C-K> :ClangFormat<CR>
