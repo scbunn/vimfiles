@@ -22,10 +22,12 @@ compilation_database_folder = os.path.join(scriptPath, 'build')
 database = None if not os.path.exists(compilation_database_folder) else ycm_core.CompilationDatabase(compilation_database_folder)
 flags = [
     '-Wall',
-    '-std=c++11',
+    '-std=c++14',
     '-stdlib=libc++',
     '-x',
     'c++',
+    '-I', '/Users/stephens/devel/common/googletest',
+    '-I', '/users/stephens/devel/common/googletest/include',
     '-I',
     '.',
 ]

@@ -83,6 +83,10 @@ set cindent                             " C/C++ style indenting
 set cinoptions=g0>2                     " take public/private to 0 tabs
                                         " 2 space indents (Google style)
 
+" highlight column 80 and high 120+
+" note: python-mode overwrites this
+let &colorcolumn="80,".join(range(120,999),",")
+
 " Reading/Writing
 set noautowrite                         " never write a file without being told to do so
 set noautowriteall                      " really -- never
@@ -154,7 +158,7 @@ if has("gui_running")
     colorscheme solarized
     " set the font if we are using MacVim
     if has("gui_macvim")
-        set guifont=Monaco:h18
+        set guifont=Inconsolata:h18
     endif
     " remove menubar / toolbar
     set guioptions-=mT
@@ -179,10 +183,11 @@ autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 
 let g:pymode_rope_lookup_project = 0
 let g:pymode_rope_complete_on_dot = 0
+let g:pymode_rope = 0
 
 " Syntastic settings
 let g:syntastic_cpp_compiler = 'clang++'
-let g:syntastic_cpp_compiler_options = '-std=c++14 -Wall'
+let g:syntastic_cpp_compiler_options = '-std=c++14 -Wall -I~/devel/common/googletest -I~/devel/common/googletest/include'
 let g:syntastic_cpp_check_header = 1
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
