@@ -20,32 +20,21 @@ cmap w!! w !sudo tee % > /dev/null
 
 map <leader>td <Plug>TaskList          " Toggle the TaskList
 
-"-----------------------------------------------------------------------------
-" Vundle configuration
-"-----------------------------------------------------------------------------
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-" --------------------------------
-Plugin 'VundleVim/Vundle.vim'
-Plugin 'tpope/vim-fugitive'
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'sjl/gundo.vim'
-Plugin 'godlygeek/tabular'
-Plugin 'klen/python-mode'
-Plugin 'vim-scripts/TaskList.vim'
-Plugin 'saltstack/salt-vim'
-Plugin 'othree/html5.vim'
-Plugin 'Shougo/unite.vim'
-Plugin 'scrooloose/syntastic'
-Plugin 'ervandew/supertab'
-Plugin 'Valloric/YouCompleteMe'
-Plugin 'SirVer/ultisnips'
-Plugin 'honza/vim-snippets'
-Plugin 'rhysd/vim-clang-format'
-
-" end of vundle init
-" --------------------------------
-call vundle#end()
+"Plugin 'tpope/vim-fugitive'
+"Plugin 'altercation/vim-colors-solarized'
+"Plugin 'sjl/gundo.vim'
+"Plugin 'godlygeek/tabular'
+"Plugin 'klen/python-mode'
+"Plugin 'vim-scripts/TaskList.vim'
+"Plugin 'saltstack/salt-vim'
+"Plugin 'othree/html5.vim'
+"Plugin 'Shougo/unite.vim'
+"Plugin 'scrooloose/syntastic'
+"Plugin 'ervandew/supertab'
+"Plugin 'Valloric/YouCompleteMe'
+"Plugin 'SirVer/ultisnips'
+"Plugin 'honza/vim-snippets'
+"Plugin 'rhysd/vim-clang-format'
 
 "-----------------------------------------------------------------------------
 " Basic settings
