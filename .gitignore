@@ -1,4 +1,5 @@
 .netrwhist
 .ropeproject
 *.pyc
-bundle/*
+plugged/*
+!plugged/README.md

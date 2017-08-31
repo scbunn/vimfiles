@@ -20,21 +20,22 @@ cmap w!! w !sudo tee % > /dev/null
 
 map <leader>td <Plug>TaskList          " Toggle the TaskList
 
-"Plugin 'tpope/vim-fugitive'
-"Plugin 'altercation/vim-colors-solarized'
-"Plugin 'sjl/gundo.vim'
-"Plugin 'godlygeek/tabular'
-"Plugin 'klen/python-mode'
-"Plugin 'vim-scripts/TaskList.vim'
-"Plugin 'saltstack/salt-vim'
-"Plugin 'othree/html5.vim'
-"Plugin 'Shougo/unite.vim'
-"Plugin 'scrooloose/syntastic'
-"Plugin 'ervandew/supertab'
-"Plugin 'Valloric/YouCompleteMe'
-"Plugin 'SirVer/ultisnips'
-"Plugin 'honza/vim-snippets'
-"Plugin 'rhysd/vim-clang-format'
+"-----------------------------------------------------------------------------
+"VIM Plugged configuration
+"-----------------------------------------------------------------------------
+call plug#begin('~/.vim/plugged')
+Plug 'altercation/vim-colors-solarized' 
+Plug 'tpope/vim-fugitive'
+Plug 'python-mode/python-mode'
+Plug 'vim-scripts/TaskList.vim'
+Plug 'othree/html5.vim'
+Plug 'sjl/gundo.vim'
+Plug 'reedes/vim-pencil'
+Plug 'plasticboy/vim-markdown'
+Plug 'reedes/vim-pencil'
+Plug 'w0rp/ale'
+Plug 'rhysd/vim-grammarous'
+call plug#end()
 
 "-----------------------------------------------------------------------------
 " Basic settings
@@ -101,7 +102,7 @@ set statusline+=%=
 set statusline+=%{synIDattr(synID(line('.'),col('.'),1),'name')}\  " highlight
 set statusline+=\ [line\ %l:%L:%c]\ 
 set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%{SyntasticStatuslineFlag()}
 
 " Searching/Patterns
 set ignorecase                          " Default to using case insensitive searches
@@ -174,31 +175,20 @@ let g:pymode_rope_lookup_project = 0
 let g:pymode_rope_complete_on_dot = 0
 let g:pymode_rope = 0
 
-" Syntastic settings
-let g:syntastic_cpp_compiler = 'clang++'
-let g:syntastic_cpp_compiler_options = '-std=c++14 -Wall -I~/devel/common/googletest -I~/devel/common/googletest/include'
-let g:syntastic_cpp_check_header = 1
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
 
-" Unite settings
-call unite#filters#matcher_default#use(['matcher_fuzzy'])
-nnoremap <Leader>f :<C-u>Unite -start-insert file buffer<CR>
-nnoremap <Leader>g :<C-u>Unite -start-insert buffer<CR>
+" Vim Markdown configuration
+let g:vim_markdown_math = 1
+let g:vim_markdown_frontmatter = 1
+let g:vim_markdown_json_frontmatter = 1
 
-" Configure YouCompleteMe
-let g:ycm_global_ycm_extra_conf = "~/.vim/ycm_extra_conf.default.py"
-let g:ycm_confirm_extra_conf = 0
-
-" Configure SuperTab to make <tab> work with both YouCompleteMe and UltiSnips
-let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
-let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
-let g:SuperTabDefaultCompletionType = '<C-n>'
-let g:UltiSnipsExpandTrigger = "<tab>"
-let g:UltiSnipsJumpForwardTrigger = "<tab>"
-let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
-
-" Bind key to clang-format
-map <C-K> :ClangFormat<CR>
+" Spelling / Grammar config
+set spelllang=en
+set spellfile=$HOME/Google\ Drive/spelling/en.utf-8.add
+set spell
+let g:grammarous#use_vim_spelllang = 1
+let g:pencil#textwidth = 79
+let g:pencil#joinspaces = 1
+augroup pencil
+    autocmd!
+    autocmd FileType markdown,mkd,md call pencil#init({'wrap': 'hard', 'autoformat': 1})
+augroup END
