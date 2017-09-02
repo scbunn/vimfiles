@@ -24,17 +24,20 @@ map <leader>td <Plug>TaskList          " Toggle the TaskList
 "VIM Plugged configuration
 "-----------------------------------------------------------------------------
 call plug#begin('~/.vim/plugged')
-Plug 'altercation/vim-colors-solarized' 
 Plug 'tpope/vim-fugitive'
 Plug 'python-mode/python-mode'
 Plug 'vim-scripts/TaskList.vim'
 Plug 'othree/html5.vim'
 Plug 'sjl/gundo.vim'
-Plug 'reedes/vim-pencil'
+Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
-Plug 'reedes/vim-pencil'
 Plug 'w0rp/ale'
 Plug 'rhysd/vim-grammarous'
+Plug 'elzr/vim-json'
+Plug 'romainl/flattened'
+Plug 'altercation/vim-colors-solarized' 
+Plug 'morhetz/gruvbox'
+Plug 'jnurmine/Zenburn'
 call plug#end()
 
 "-----------------------------------------------------------------------------
@@ -67,7 +70,7 @@ set expandtab                           " Use spaces, not tabs, for autoindent/t
 set shiftround                          " round indent to a multiple of shiftwidth
 set matchpairs+=<:>                     " show <> pairs as well
 set foldmethod=indent                   " fold based on indent level
-set foldlevel=99                        " don't fold by default
+"set foldlevel=99                        " don't fold by default
 let python_highlight_all=1              " do better python syntax highlighting
 set cindent                             " C/C++ style indenting
 set cinoptions=g0>2                     " take public/private to 0 tabs
@@ -153,7 +156,8 @@ if has("gui_running")
     " remove menubar / toolbar
     set guioptions-=mT
 else
-    colorscheme solarized
+    set termguicolors
+    colorscheme gruvbox
 endif
 
 " Source the vimrc file after saving it
@@ -186,9 +190,7 @@ set spelllang=en
 set spellfile=$HOME/Google\ Drive/spelling/en.utf-8.add
 set spell
 let g:grammarous#use_vim_spelllang = 1
-let g:pencil#textwidth = 79
-let g:pencil#joinspaces = 1
-augroup pencil
-    autocmd!
-    autocmd FileType markdown,mkd,md call pencil#init({'wrap': 'hard', 'autoformat': 1})
-augroup END
+au BufRead,BufNewFIle *.md setlocal textwidth=79
+let g:vim_markdown_folding_style_pythonic = 1
+let g:vim_markdown_folding_level = 6
+set conceallevel=2
