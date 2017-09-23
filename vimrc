@@ -1,8 +1,4 @@
 " https://github.com/scbunn/vimfiles
-" ----------------------------------------------------------------------------
-"  Dependencies needed outside of vim
-" ----------------------------------------------------------------------------
-" YouCompleteMe needs to be setup for use with clang and a custom
 
 "-----------------------------------------------------------------------------
 " Global general settings
@@ -18,8 +14,6 @@ cmap W! w !sudo tee % > /dev/null
 " try and save file with sudo if needed?
 cmap w!! w !sudo tee % > /dev/null
 
-map <leader>td <Plug>TaskList          " Toggle the TaskList
-
 "-----------------------------------------------------------------------------
 "VIM Plugged configuration
 "-----------------------------------------------------------------------------
@@ -30,14 +24,21 @@ Plug 'vim-scripts/TaskList.vim'
 Plug 'othree/html5.vim'
 Plug 'sjl/gundo.vim'
 Plug 'godlygeek/tabular'
+Plug 'reedes/vim-pencil'
 Plug 'plasticboy/vim-markdown'
-Plug 'w0rp/ale'
 Plug 'rhysd/vim-grammarous'
+Plug 'w0rp/ale'
 Plug 'elzr/vim-json'
-Plug 'romainl/flattened'
 Plug 'altercation/vim-colors-solarized' 
 Plug 'morhetz/gruvbox'
 Plug 'jnurmine/Zenburn'
+Plug 'maralla/completor.vim'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
+Plug 'junegunn/fzf.vim'
+Plug 'junegunn/limelight.vim'
+Plug 'tpope/vim-fugitive'
 call plug#end()
 
 "-----------------------------------------------------------------------------
@@ -70,16 +71,11 @@ set expandtab                           " Use spaces, not tabs, for autoindent/t
 set shiftround                          " round indent to a multiple of shiftwidth
 set matchpairs+=<:>                     " show <> pairs as well
 set foldmethod=indent                   " fold based on indent level
-"set foldlevel=99                        " don't fold by default
 let python_highlight_all=1              " do better python syntax highlighting
 set cindent                             " C/C++ style indenting
 set cinoptions=g0>2                     " take public/private to 0 tabs
                                         " 2 space indents (Google style)
-
-" highlight column 80 and high 120+
-" note: python-mode overwrites this
-let &colorcolumn="80,".join(range(120,999),",")
-
+                                        "
 " Reading/Writing
 set noautowrite                         " never write a file without being told to do so
 set noautowriteall                      " really -- never
@@ -87,6 +83,10 @@ set noautoread                          " don't reread changed files
 set modeline                            " allow vim options to be embedded in files
 set modelines=5                         " they must be within the first/last 5 lines
 set ffs=unix,dos,mac                    " try to recognize various line endings
+
+" highlight column 80 and high 120+
+" note: python-mode overwrites this
+let &colorcolumn="80,".join(range(120,999),",")
 
 " Messages, Info, Status
 set ls=2                                " allows show status line
@@ -96,24 +96,12 @@ set report=0                            " : commands always print changed line c
 set shortmess+=a                        " use [+]/[RO]/[W] for modified/readonly/written
 set laststatus=2                        " Always show statusline, even if only 1 window
 
-" Set the status line
-set statusline=\ %-3.3n
-set statusline+=%f
-set statusline+=%m%r%h%w
-set statusline+=\ [%{strlen(&fenc)?&fenc:&enc}]
-set statusline+=%=
-set statusline+=%{synIDattr(synID(line('.'),col('.'),1),'name')}\  " highlight
-set statusline+=\ [line\ %l:%L:%c]\ 
-set statusline+=%#warningmsg#
-"set statusline+=%{SyntasticStatuslineFlag()}
-
 " Searching/Patterns
 set ignorecase                          " Default to using case insensitive searches
 set smartcase                           " unless uppercase letters are used
 set smarttab                            " handle tables intelligently
 set hlsearch                            " Highlight searches by default
 set incsearch                           " Incrementally search while typing a search
-
 
 " disable arrow keys for movement (need to force myself to learn)
 nnoremap <Left> :echoe "Use h"<CR> 
@@ -143,9 +131,6 @@ nmap <leader>q :wqa!<CR>
 nmap <leader>w :w!<CR>
 nmap <leader><Esc> :q!<CR>
 
-" execute current buffer as python
-map <S-r> :w !/usr/bin/env python %<CR>
-
 " Display/Color Theme
 if has("gui_running")
     colorscheme solarized
@@ -164,33 +149,72 @@ endif
 if has("autocmd")
     autocmd bufwritepost .vimrc source $MYVIMRC
 endif
+" <TAB>: completion.
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 
+" ----------------------------------------------------------------------------
+"  Plugin Configurations
+" ----------------------------------------------------------------------------
 
-" Python binding stuff
-" remove trailing whitespace automagically
-autocmd BufWritePre *.py :%s/\s\+$//e
+" TaskList Configuration
+map <leader>td <Plug>TaskList          " Toggle the TaskList
 
-let g:pep8_map='<leader>8'
-let g:pymode_lint_cwindow = 0
-autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
-autocmd InsertLeave * if pumvisible() == 0|pclose|endif
+" Vim-Airline Configuration
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_theme='hybrid'
 
-let g:pymode_rope_lookup_project = 0
-let g:pymode_rope_complete_on_dot = 0
-let g:pymode_rope = 0
-
-
-" Vim Markdown configuration
+" Markdown Support
 let g:vim_markdown_math = 1
 let g:vim_markdown_frontmatter = 1
 let g:vim_markdown_json_frontmatter = 1
+let g:vim_markdown_folding_style_pythonic = 1
+let g:vim_markdown_folding_level = 6
 
-" Spelling / Grammar config
+" Spelling and Grammar
 set spelllang=en
 set spellfile=$HOME/Google\ Drive/spelling/en.utf-8.add
 set spell
-let g:grammarous#use_vim_spelllang = 1
-au BufRead,BufNewFIle *.md setlocal textwidth=79
-let g:vim_markdown_folding_style_pythonic = 1
-let g:vim_markdown_folding_level = 6
 set conceallevel=2
+let g:grammarous#default_comments_only_filetypes = {
+            \ '*' : 1, 'help' : 0, 'markdown' : 0,
+            \ }
+
+" Vim-pencil
+let g:pencil#wrapModeDefault = 'soft'
+augroup pencil
+    autocmd!
+    autocmd FileType markdown,mkd call pencil#init()
+    autocmd FileType text         call pencil#init()
+augroup END
+
+" Fzf configuration
+nnoremap <C-p> :Files<CR>
+
+let g:fzf_action = {
+  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-x': 'split',
+  \ 'ctrl-v': 'vsplit' }
+
+" Default fzf layout
+" - down / up / left / right
+let g:fzf_layout = { 'down': '~40%' }
+
+" Python Configuration
+" Some auto fold sanity; I want buffers fully expanded on open and I will fold
+" sections that I want to hide manually.
+autocmd Syntax python normal zR
+let g:pymode_trim_whitespaces = 1
+let g:pymode_options = 1
+let g:pymode_indent = 1
+let g:pymode_folding = 1
+let g:pymode_virtualenv = 1
+let g:pymode_run = 1
+let g:pymode_run_bind = '<leader>r'
+let g:pymode_lint = 0
+let g:pymode_rope = 0
+let g:pymode_syntax =1
+let g:pymode_syntax_slow_sync = 1
+let g:pymode_syntax_all = 1
+
+autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
+autocmd InsertLeave * if pumvisible() == 0|pclose|endif
