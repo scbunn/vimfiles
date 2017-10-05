@@ -39,7 +39,11 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/limelight.vim'
 Plug 'tpope/vim-fugitive'
+Plug 'benmills/vimux'
+Plug 'julienr/vimux-pyutils'
+Plug 'fisadev/vim-isort'
 call plug#end()
+
 
 "-----------------------------------------------------------------------------
 " Basic settings
@@ -202,14 +206,13 @@ let g:fzf_layout = { 'down': '~40%' }
 " Python Configuration
 " Some auto fold sanity; I want buffers fully expanded on open and I will fold
 " sections that I want to hide manually.
+map <leader>r :call VimuxRunCommand("clear; python " . bufname("%"))<CR>
 autocmd Syntax python normal zR
 let g:pymode_trim_whitespaces = 1
 let g:pymode_options = 1
 let g:pymode_indent = 1
 let g:pymode_folding = 1
 let g:pymode_virtualenv = 1
-let g:pymode_run = 1
-let g:pymode_run_bind = '<leader>r'
 let g:pymode_lint = 0
 let g:pymode_rope = 0
 let g:pymode_syntax =1
