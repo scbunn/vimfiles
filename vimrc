@@ -23,9 +23,10 @@ Plug 'python-mode/python-mode'
 Plug 'vim-scripts/TaskList.vim'
 Plug 'othree/html5.vim'
 Plug 'sjl/gundo.vim'
-Plug 'godlygeek/tabular'
+Plug 'dhruvasagar/vim-table-mode'
 Plug 'reedes/vim-pencil'
 Plug 'plasticboy/vim-markdown'
+Plug 'Rykka/riv.vim'
 Plug 'rhysd/vim-grammarous'
 Plug 'w0rp/ale'
 Plug 'elzr/vim-json'
@@ -167,6 +168,10 @@ map <leader>td <Plug>TaskList          " Toggle the TaskList
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_theme='hybrid'
 
+" Table Mode Configuration
+let g:table_mode_header_fillchar='='
+let g:table_mode_corner_corner='+'
+
 " Markdown Support
 let g:vim_markdown_math = 1
 let g:vim_markdown_frontmatter = 1
@@ -184,7 +189,7 @@ let g:grammarous#default_comments_only_filetypes = {
             \ }
 
 " Vim-pencil
-let g:pencil#wrapModeDefault = 'soft'
+let g:pencil#wrapModeDefault = 'hard'
 augroup pencil
     autocmd!
     autocmd FileType markdown,mkd call pencil#init()
@@ -206,7 +211,7 @@ let g:fzf_layout = { 'down': '~40%' }
 " Python Configuration
 " Some auto fold sanity; I want buffers fully expanded on open and I will fold
 " sections that I want to hide manually.
-map <leader>r :call VimuxRunCommand("clear; python " . bufname("%"))<CR>
+map <leader>r :call VimuxRunCommand("clear; /usr/bin/env python " . bufname("%"))<CR>
 autocmd Syntax python normal zR
 let g:pymode_trim_whitespaces = 1
 let g:pymode_options = 1
