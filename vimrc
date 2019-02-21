@@ -26,6 +26,7 @@ Plug 'sjl/gundo.vim'
 Plug 'dhruvasagar/vim-table-mode'
 Plug 'reedes/vim-pencil'
 Plug 'plasticboy/vim-markdown'
+Plug 'Glench/Vim-Jinja2-Syntax'
 Plug 'Rykka/riv.vim'
 Plug 'rhysd/vim-grammarous'
 Plug 'w0rp/ale'
@@ -33,7 +34,7 @@ Plug 'elzr/vim-json'
 Plug 'altercation/vim-colors-solarized' 
 Plug 'morhetz/gruvbox'
 Plug 'jnurmine/Zenburn'
-Plug 'maralla/completor.vim'
+"Plug 'maralla/completor.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
@@ -43,6 +44,12 @@ Plug 'tpope/vim-fugitive'
 Plug 'benmills/vimux'
 Plug 'julienr/vimux-pyutils'
 Plug 'fisadev/vim-isort'
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+Plug 'airblade/vim-gitgutter'
+Plug 'fatih/vim-go', {'do': ':GoUpdateBinaries' }
+Plug 'ekalinin/Dockerfile.vim'
+Plug 'hashivim/vim-terraform'
 call plug#end()
 
 
@@ -131,6 +138,15 @@ nmap <leader>D :bufdo bd<CR>
 " Switch between last two buffers
 nnoremap <leader><leader> <c-^>
 
+" make split navigation easy
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+
+set splitbelow
+set splitright
+
 " Saving and exit
 nmap <leader>q :wqa!<CR>
 nmap <leader>w :w!<CR>
@@ -213,16 +229,29 @@ let g:fzf_layout = { 'down': '~40%' }
 " sections that I want to hide manually.
 map <leader>r :call VimuxRunCommand("clear; /usr/bin/env python " . bufname("%"))<CR>
 autocmd Syntax python normal zR
+let g:pymode_python = 'python3'
 let g:pymode_trim_whitespaces = 1
 let g:pymode_options = 1
 let g:pymode_indent = 1
 let g:pymode_folding = 1
-let g:pymode_virtualenv = 1
+let g:pymode_virtualenv = 0
 let g:pymode_lint = 0
+let g:pymode_init = 0
 let g:pymode_rope = 0
-let g:pymode_syntax =1
+let g:pymode_syntax = 1
 let g:pymode_syntax_slow_sync = 1
 let g:pymode_syntax_all = 1
 
 autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
 autocmd InsertLeave * if pumvisible() == 0|pclose|endif
+
+
+" disable folding
+set nofoldenable    " disable folding
+
+
+" UltiSnips setup
+autocmd BufRead,BufNewFile *.html.j2 UltiSnipsAddFiletypes jinja2.html
+
+" Terraform
+let g:terraform_fmt_on_save=1
